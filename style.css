@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  max-width: 1130px;
+  margin: 90px auto 0px;
+}
+.header h1 {
+  background-color: #336699;
+  padding: 20px 60px;
+
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 100%;
+
+  color: #ffffff;
+}
+.calculator-body {
+  background-color: #f8f8f8;
+  display: flex;
+}
+.calc-container {
+  padding: 30px 60px;
+  width: 720px;
+}
+.main-container {
+  padding-left: 30px;
+  display: flex;
+}
+.dob-container,
+.target-container {
+  display: flex;
+}
+.title {
+  width: 145px;
+}
+.title p {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  text-align: end;
+}
+.calc-container .recent-date,
+.calc-container .calculate {
+  padding-left: 145px;
+}
+.result-container {
+  margin: 30px 0;
+  width: 410px;
+  border-left: 1px solid #c9c9c9;
+}
+.age-container {
+  padding: 10px 65px;
+}
+.date-box {
+  padding: 20px 25px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background-color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  width: 150px;
+  height: 60px;
+  /* background: url(img/down-arrow.svg) no-repeat center center / cover; */
+}
+input[type="number"].date-box {
+  width: 100px;
+  cursor: text;
+}
+input[type="number"].date-box::-webkit-outer-spin-button,
+input[type="number"].date-box::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.dob-container,
+.target-container,
+.recent-date,
+.calculate {
+  margin-bottom: 25px;
+  align-items: center;
+}
+.option {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+}
+.option .down-arrow {
+  background: url(img/down-arrow.svg) no-repeat center center / cover;
+}
