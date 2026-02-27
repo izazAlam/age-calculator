@@ -32,6 +32,7 @@
 .main-container {
   padding-left: 30px;
   display: flex;
+  gap: 20px;
 }
 .dob-container,
 .target-container {
@@ -67,9 +68,16 @@
   cursor: pointer;
   outline: none;
   appearance: none;
-  width: 150px;
+  width: 100px;
   height: 60px;
-  /* background: url(img/down-arrow.svg) no-repeat center center / cover; */
+  background-color: #efefef;
+  border: 1px solid #e3e3e3;
+}
+.picker {
+  background-image: url("img/down-arrow.svg");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 0.2s;
 }
 input[type="number"].date-box {
   width: 100px;
@@ -91,7 +99,64 @@ input[type="number"].date-box::-webkit-inner-spin-button {
   font-weight: 400;
   font-size: 18px;
   line-height: 100%;
+  background-color: #e3e3e3;
 }
 .option .down-arrow {
   background: url(img/down-arrow.svg) no-repeat center center / cover;
+}
+.recent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.recent p {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+}
+.checkbox {
+  border: 1px solid #e3e3e3;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  cursor: pointer;
+}
+.calculate-button button {
+  background-color: #336699;
+  border: none;
+  padding: 20px 70px;
+
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 100%;
+
+  color: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.bg-img {
+  background: url(img/calender\ Icon.svg) no-repeat center center / cover;
+  height: 30px;
+  width: 30px;
+}
+.date-picker button {
+  padding: 15px;
+
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+  background-color: #efefef;
+  cursor: pointer;
+}
+.result-container h4 {
+  margin-bottom: 5px;
+}
+.date-picker {
+  position: relative;
+}
+
+.date-picker input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
