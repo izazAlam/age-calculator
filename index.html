@@ -78,14 +78,8 @@
                 placeholder="Year"
               />
               <div class="date-picker">
-                <button type="button" id="openCalendarDob">
-                  <div class="bg-img"></div>
-                </button>
-                <input
-                  type="date"
-                  id="targetDateDob"
-                  style="position: absolute; left: -9999px"
-                />
+                <div class="bg-img"></div>
+                <input type="date" id="datePickerDob" />
               </div>
             </div>
           </div>
@@ -163,10 +157,9 @@
                 class="date-box"
               />
               <div class="date-picker">
-                <button type="button" id="openCalendarTarget">
-                  <div class="bg-img"></div>
-                </button>
-                <input type="date" id="targetDateTarget" />
+                <div class="bg-img"></div>
+
+                <input type="date" id="datePickerTarget" />
               </div>
             </div>
           </div>
@@ -174,14 +167,12 @@
           <div class="recent-date">
             <div class="main-container">
               <div class="recent">
-                <label>
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    name="recentDate"
-                    value="recent"
-                  />
-                </label>
+                <input
+                  class="checkbox"
+                  type="checkbox"
+                  name="recentDate"
+                  value="recent"
+                />
                 <p>Recent Date</p>
               </div>
             </div>
@@ -189,7 +180,7 @@
           <div class="calculate">
             <div class="main-container">
               <div class="calculate-button">
-                <button type="button">CALCULATE</button>
+                <button type="button" id="calculateButton">CALCULATE</button>
               </div>
             </div>
           </div>

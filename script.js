@@ -1,168 +1,152 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const dobMonth = document.getElementById("dobMonth");
-  const dobDay = document.getElementById("dobDay");
-  const dobYear = document.getElementById("dobYear");
+const recentCheckBox = document.querySelector('input[name="recentDate"]');
 
-  const targetMonth = document.getElementById("targetMonth");
-  const targetDay = document.getElementById("targetDay");
-  const targetYear = document.getElementById("targetYear");
+const targetMonth = document.querySelector("#targetMonth");
+const targetDay = document.querySelector("#targetDay");
+const targetYear = document.querySelector("#targetYear");
+const targetDateInput = document.querySelector("#datePickerTarget");
 
-  const recentCheckbox = document.querySelector(".checkbox");
-  const calculateBtn = document.querySelector(".calculate-button button");
-  const resultContainer = document.querySelector(".age-container");
+const dobMonth = document.querySelector("#dobMonth");
+const dobDay = document.querySelector("#dobDay");
+const dobYear = document.querySelector("#dobYear");
+const dobDateInput = document.querySelector("#datePickerDob");
 
-  const openCalendarDob = document.getElementById("openCalendarDob");
-  const calendarDob = document.getElementById("targetDateDob");
+const calculateButton = document.querySelector("#calculateButton");
 
-  const openCalendarTarget = document.getElementById("openCalendarTarget");
-  const calendarTarget = document.getElementById("targetDateTarget");
+function setTodayDate() {
+  const today = new Date();
 
-  function openCalendar(input) {
-    if (input.showPicker) {
-      input.showPicker(); // Chrome, Edge
-    } else {
-      input.click();
-    }
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+
+  targetYear.value = year;
+  targetMonth.value = month;
+  targetDay.value = String(day).padStart(2, "0");
+
+  const formatted =
+    year +
+    "-" +
+    String(month).padStart(2, "0") +
+    "-" +
+    String(day).padStart(2, "0");
+
+  targetDateInput.value = formatted;
+}
+
+recentCheckBox.addEventListener("change", function () {
+  if (this.checked) {
+    setTodayDate();
+  }
+});
+
+targetDateInput.addEventListener("change", function () {
+  if (!this.value) return;
+
+  const date = new Date(this.value);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  targetYear.value = year;
+  targetMonth.value = month;
+
+  targetDay.value = String(day).padStart(2, "0");
+});
+
+function updateTargetPickerFromDropdowns() {
+  const year = targetYear.value;
+  const month = String(targetMonth.value).padStart(2, "0");
+  const day = String(targetDay.value).padStart(2, "0");
+
+  const formatted = `${year}-${month}-${day}`;
+  targetDateInput.value = formatted;
+}
+
+targetYear.addEventListener("change", updateTargetPickerFromDropdowns);
+targetMonth.addEventListener("change", updateTargetPickerFromDropdowns);
+targetDay.addEventListener("change", updateTargetPickerFromDropdowns);
+
+dobDateInput.addEventListener("change", function () {
+  if (!this.value) return;
+
+  const date = new Date(this.value);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  dobYear.value = year;
+  dobMonth.value = month;
+
+  dobDay.value = String(day).padStart(2, "0");
+});
+
+function updateDOBPickerFromDropdowns() {
+  const year = dobYear.value;
+  const month = String(dobMonth.value).padStart(2, "0");
+  const day = String(dobDay.value).padStart(2, "0");
+
+  const formatted = `${year}-${month}-${day}`;
+  dobDateInput.value = formatted;
+}
+
+dobYear.addEventListener("change", updateDOBPickerFromDropdowns);
+dobMonth.addEventListener("change", updateDOBPickerFromDropdowns);
+dobDay.addEventListener("change", updateDOBPickerFromDropdowns);
+
+function calculateAge() {
+  if (!dobDay.value || !targetDay.value) return;
+
+  // Parse DOB
+  const bYear = parseInt(dobYear.value);
+  const bMonth = parseInt(dobMonth.value);
+  const bDay = parseInt(dobDay.value);
+
+  // Parse Target Date
+  const tYear = parseInt(targetYear.value);
+  const tMonth = parseInt(targetMonth.value);
+  const tDay = parseInt(targetDay.value);
+
+  // --- Calculate years, months, days ---
+  let years = tYear - bYear;
+  let months = tMonth - bMonth;
+  let days = tDay - bDay;
+
+  if (days < 0) {
+    months--;
+    const prevMonth = new Date(tYear, tMonth - 1, 0); // last day of previous month
+    days += prevMonth.getDate();
   }
 
-  // =========================
-  // LIMIT MAX DATE TO TODAY
-  // =========================
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
 
-  const todayString = new Date().toISOString().split("T")[0];
-  calendarDob.max = todayString;
-  calendarTarget.max = todayString;
+  // --- Calculate total days difference ---
+  const dobDate = new Date(bYear, bMonth - 1, bDay);
+  const targetDate = new Date(tYear, tMonth - 1, tDay);
+  const diffMs = targetDate - dobDate; // milliseconds
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = years * 12 + months; // approximate months
+  const diffHours = diffDays * 24;
+  const diffMinutes = diffHours * 60;
+  const diffSeconds = diffMinutes * 60;
 
-  // =========================
-  // DOB CALENDAR FUNCTIONALITY
-  // =========================
-
-  openCalendarDob.addEventListener("click", () => {
-    calendarDob.click();
-  });
-
-  calendarDob.addEventListener("change", () => {
-    const date = new Date(calendarDob.value);
-
-    dobMonth.value = date.getMonth() + 1;
-    dobDay.value = date.getDate();
-    dobYear.value = date.getFullYear();
-  });
-  // =========================
-  // TARGET CALENDAR FUNCTIONALITY
-  // =========================
-
-  openCalendarTarget.addEventListener("click", () => {
-    if (!targetMonth.disabled) {
-      calendarTarget.click();
-    }
-  });
-
-  calendarTarget.addEventListener("change", () => {
-    const date = new Date(calendarTarget.value);
-
-    targetMonth.value = date.getMonth() + 1;
-    targetDay.value = date.getDate();
-    targetYear.value = date.getFullYear();
-  });
-  // =========================
-  // RECENT DATE CHECKBOX
-  // =========================
-
-  recentCheckbox.addEventListener("change", function () {
-    if (this.checked) {
-      const today = new Date();
-
-      targetMonth.value = today.getMonth() + 1;
-      targetDay.value = today.getDate();
-      targetYear.value = today.getFullYear();
-
-      targetMonth.disabled = true;
-      targetDay.disabled = true;
-      targetYear.disabled = true;
-    } else {
-      targetMonth.disabled = false;
-      targetDay.disabled = false;
-      targetYear.disabled = false;
-    }
-  });
-
-  // =========================
-  // AGE CALCULATION
-  // =========================
-
-  calculateBtn.addEventListener("click", function () {
-    const birthDate = new Date(
-      parseInt(dobYear.value),
-      parseInt(dobMonth.value) - 1,
-      parseInt(dobDay.value),
-    );
-
-    const targetDate = new Date(
-      parseInt(targetYear.value),
-      parseInt(targetMonth.value) - 1,
-      parseInt(targetDay.value),
-    );
-
-    // Validation
-    if (birthDate > targetDate) {
-      resultContainer.innerHTML = `
-        <h4>Age:</h4>
-        <p>Invalid Date (Birth date is after target date)</p>
-      `;
-
-      return;
-    }
-
-    // Time differences
-    const diffMs = targetDate - birthDate;
-
-    const seconds = Math.floor(diffMs / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const weeks = Math.floor(days / 7);
-
-    // Year month day calculation
-    let years = targetDate.getFullYear() - birthDate.getFullYear();
-    let months = targetDate.getMonth() - birthDate.getMonth();
-    let day = targetDate.getDate() - birthDate.getDate();
-
-    if (day < 0) {
-      months--;
-
-      const lastMonthDays = new Date(
-        targetDate.getFullYear(),
-        targetDate.getMonth(),
-        0,
-      ).getDate();
-
-      day += lastMonthDays;
-    }
-
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-
-    const totalMonths = years * 12 + months;
-
-    function format(num) {
-      return num.toLocaleString();
-    }
-
-    // Display result
-    resultContainer.innerHTML = `
-      <h4>Age:</h4>
-      <p>
-        ${years} years ${months} months ${day} days<br><br>
-        or ${totalMonths} months ${day} days<br><br>
-        or ${weeks} weeks ${day} days<br><br>
-        or ${format(days)} days<br><br>
-        or ${format(hours)} hours<br><br>
-        or ${format(minutes)} minutes<br><br>
-        or ${format(seconds)} seconds
-      </p>
-    `;
-  });
+  // --- Output ---
+  document.querySelector(".age-container").innerHTML = `
+    <h4>Age:</h4>
+    <p>${years} years ${months} months ${days} days</p>
+    <p>${diffMonths} months ${days} days</p>
+    <p>${diffWeeks} weeks ${days} days</p>
+    <p>${diffDays.toLocaleString()} days</p>
+    <p>${diffHours.toLocaleString()} hours</p>
+    <p>${diffMinutes.toLocaleString()} minutes</p>
+    <p>${diffSeconds.toLocaleString()} seconds</p>
+  `;
+}
+calculateButton.addEventListener("click", function () {
+  calculateAge();
 });
